@@ -1,0 +1,25 @@
+<div class="results-block">
+  <%= render 'layouts/messages' %>
+</div>
+
+<% if @book %>
+  <div class="card card-header results-block">
+    <strong>Title: </strong> <%= @book.title %>
+    <strong>Number of Units: </strong> <%= @book.number_Of_units %>
+    <strong>Discription: </strong> <%= @book.discription %>
+    <% if current_user.can_issue_book?(@book.title) %>
+      <%= link_to 'Add to profile', book_users_path(user: current_user, title: @book.title),
+                                    class: "btn btn-sm btn-success", method: :post %>
+    <% else %>
+      <span class="badge badge-secondary">
+        You have already issued this book
+        <% if !current_user.under_book_limit? %>
+          3 books
+        <% end %>
+        <% if current_user.book_already_issued?(@book.title) %>
+          this book
+        <% end %>
+      </span>
+    <% end %>
+  </div>
+<% end %>

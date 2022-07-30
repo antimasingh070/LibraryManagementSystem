@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-9">  
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Number of Units</th>
+          <th scope="col">Discription</th>
+          <th scope="col">Created at</th>
+          <th scope="col">Updated at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @issued_books.each do |book| %>
+          <tr>
+            <th scope="row"><%= book.title %></th>
+            <td><%= book.number_Of_units %></td>
+            <td><%= book.discription %></td>
+            <td><% if current_user.can_issue_book?(book.title) %>
+                  <%= link_to 'Add to profile', book_users_path(user: current_user, title: book.title),
+                                    class: "btn btn-sm btn-success", method: :post %>
+                <% elsif current_user.id != @user.id %>
+                  <span class="badge badge-secondary">
+                    You have already issued!
+                    <% if !current_user.under_book_limit? %>
+                      10 book
+                    <% end %>
+                    <% if current_user.book_already_issued?(book.title) %>
+                      this book
+                    <% end %>
+                  </span>
+                <% end %>
+              <% if current_user.id == @user.id %>
+                <%= link_to 'Remove', book_user_path(book), method: :delete, data: {confirm: 'Are you sure?'},
+                                          class: 'btn btn-sm btn-warning' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

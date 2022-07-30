@@ -1,0 +1,23 @@
+<h1>My Profile</h1>
+
+<div class='search-area'>
+  <h3>Search Books</h3>
+  <%= form_tag book_path, remote: true, method: :get do %>
+    <div class="form-group row">
+      <div class="col-sm-9 no-right-padding">
+        <%= text_field_tag :book, params[:book], placeholder: "Search books", autofocus: true, class: "form-control form-control-lg" %>
+      </div>
+      <div class="col-sm-3 no-left-padding">
+        <%= button_tag type: :submit, :title => nil,  class: "btn btn-success" do %>
+          <%= fa_icon 'search 2x' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div id="results">
+
+</div>
+<% if !@issued_books.empty? %>
+  <%= render 'books/list'%>
+<% end %>
